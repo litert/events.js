@@ -1,6 +1,6 @@
 {
   "name": "@litert/events",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "An events controller library for LiteRT.",
   "main": "libs/index.js",
   "scripts": {
@@ -22,8 +22,8 @@
     "url": "https://github.com/litert/events.js/issues"
   },
   "homepage": "https://github.com/litert/events.js#readme",
-  "types": "./lib/index.d.ts",
-  "typings": "./lib/index.d.ts",
+  "types": "./libs/index.d.ts",
+  "typings": "./libs/index.d.ts",
   "devDependencies": {
     "typescript": "^3.2.4"
   },
