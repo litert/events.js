@@ -20,19 +20,32 @@ import * as Events from "../libs";
 
 interface IEventDefinitions extends Events.ICallbackDefinitions {
 
-    timer(): void;
+    timer(t: number): void;
+
+    walk(a: string, g: number): void;
 }
 
 const eh: Events.IEmitter<IEventDefinitions> = new Events.EventEmitter<IEventDefinitions>();
 
 eh
-.on("timer", function(): void {
+.on("timer", function(t): void {
 
-    console.log(new Date());
+    console.log(new Date(t));
+})
+.on("walk", function(t, g): void {
+
+    console.log(new Date(t), g);
+})
+.on("gg", function(a): false {
+    return false;
 })
 .once("timer", function(): void {
 
     console.log("This should be called once only.");
 });
 
-setInterval(() => eh.emit("timer"), 1000);
+setInterval(() => eh.emit("timer", Date.now()), 1000);
+
+eh.emit("walk", "2019-11-11", 123);
+
+eh.emit("gg", "2019-11-11", 123);

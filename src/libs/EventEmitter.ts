@@ -21,7 +21,7 @@ const P_EVENT_SLOTS = Symbol("events:slots");
 
 const P_CONFIG = Symbol("events:config");
 
-class ListenerInfo<T extends C.ICallback> {
+class ListenerInfo<T extends Function> {
 
     public once: boolean;
 
@@ -43,7 +43,7 @@ const DEFAULT_CONFIGURATION: C.IConfiguration = {
     maxListeners: 10
 };
 
-class EventInfo<T extends C.ICallback> {
+class EventInfo<T extends Function> {
 
     /**
      * The configuration of this event.
@@ -64,7 +64,7 @@ class EventInfo<T extends C.ICallback> {
 
 type EventSlot<T extends C.ICallbackDefinitions> = {
 
-    [E in keyof T]: EventInfo<C.ICallbackType<T[E]>>;
+    [E in keyof T]: EventInfo<C.TRebuildFn<T[E]>>;
 };
 
 export class EventEmitter<T extends C.ICallbackDefinitions>
@@ -82,7 +82,7 @@ implements C.IEmitter<T> {
 
     public addListener<E extends keyof T>(
         event: E,
-        callback: C.ICallbackType<T[E]>
+        callback: C.TRebuildFn<T[E]>
     ): this {
 
         return this.on<E>(event, callback);
@@ -90,7 +90,7 @@ implements C.IEmitter<T> {
 
     public on<E extends keyof T>(
         event: E,
-        callback: C.ICallbackType<T[E]>
+        callback: C.TRebuildFn<T[E]>
     ): this {
 
         let ev = this[P_EVENT_SLOTS][event];
@@ -114,7 +114,7 @@ implements C.IEmitter<T> {
 
     public addOnceListener<E extends keyof T>(
         event: E,
-        callback: C.ICallbackType<T[E]>
+        callback: C.TRebuildFn<T[E]>
     ): this {
 
         return this.once<E>(event, callback);
@@ -122,7 +122,7 @@ implements C.IEmitter<T> {
 
     public once<E extends keyof T>(
         event: E,
-        callback: C.ICallbackType<T[E]>
+        callback: C.TRebuildFn<T[E]>
     ): this {
 
         let ev = this[P_EVENT_SLOTS][event];
@@ -151,7 +151,7 @@ implements C.IEmitter<T> {
 
     public hasListener<E extends keyof T>(
         event: E,
-        callback: C.ICallbackType<T[E]>
+        callback: C.TRebuildFn<T[E]>
     ): boolean {
 
         const ev = this[P_EVENT_SLOTS][event];
@@ -164,7 +164,7 @@ implements C.IEmitter<T> {
         return ev.listeners.filter((x) => x.callback === callback).length > 0;
     }
 
-    public listeners<E extends keyof T>(event: E): Array<C.ICallbackType<T[E]>> {
+    public listeners<E extends keyof T>(event: E): Array<C.TRebuildFn<T[E]>> {
 
         const ev = this[P_EVENT_SLOTS][event];
 
@@ -180,7 +180,7 @@ implements C.IEmitter<T> {
 
     public off<E extends keyof T>(
         event: E,
-        callback?: C.ICallbackType<T[E]>
+        callback?: C.TRebuildFn<T[E]>
     ): number {
 
         const ev = this[P_EVENT_SLOTS][event];
@@ -206,7 +206,7 @@ implements C.IEmitter<T> {
 
     public removeListener<E extends keyof T>(
         event: E,
-        callback?: C.ICallbackType<T[E]>
+        callback?: C.TRebuildFn<T[E]>
     ): number {
 
         return this.off<E>(event, callback);
@@ -241,7 +241,7 @@ implements C.IEmitter<T> {
 
     public emit<E extends keyof T>(
         event: E,
-        ...args: C.ICallbackArgs<T[E]>
+        ...args: Parameters<T[E]>
     ): boolean {
 
         const ev = this[P_EVENT_SLOTS][event];
