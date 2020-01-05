@@ -6,6 +6,8 @@
 [![GitHub issues](https://img.shields.io/github/issues/litert/events.js.svg)](https://github.com/litert/events.js/issues)
 [![GitHub Releases](https://img.shields.io/github/release/litert/events.js.svg)](https://github.com/litert/events.js/releases "Stable Release")
 
+> **DEPRECATED: Migrated to [@litert/observable](https://github.com/litert/observable.js).**
+
 An events controller library for LiteRT.
 
 ## Requirement
